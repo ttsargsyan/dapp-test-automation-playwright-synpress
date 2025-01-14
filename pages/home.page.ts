@@ -6,6 +6,11 @@ export default class HomePage extends BasePage {
   readonly textWalletNotConnected: Locator;
   readonly tableCitizens: Locator;
   readonly textTotalRecordsCount: Locator;
+  readonly citizenRows: Locator;
+  readonly modal: Locator;
+  readonly modalTitle: Locator;
+  readonly modalText: Locator;
+  readonly closeBtn: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -17,6 +22,11 @@ export default class HomePage extends BasePage {
     );
     this.tableCitizens = this.page.getByTestId("citizensTable");
     this.textTotalRecordsCount = this.page.getByTestId("totalRecordsCount");
+    this.citizenRows = this.page.locator('[data-testid="citizenRow-1"]');
+    this.modal = this.page.locator('div').filter({ hasText: 'Notes: Some of John\'s' }).nth(2);
+    this.modalTitle = this.page.getByText('Notes:');
+    this.modalText = this.page.getByText('Some of John\'s notes');
+    this.closeBtn = this.page.getByRole('button', { name: 'Close' });
   }
 
   async navigate(): Promise<void> {

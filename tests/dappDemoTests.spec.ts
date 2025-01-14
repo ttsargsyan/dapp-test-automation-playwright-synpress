@@ -1,6 +1,7 @@
 import { test, expect } from "../fixtures/pomSynpressFixture";
 import * as metamask from "@synthetixio/synpress/commands/metamask";
 import { citizenData, expectedValues } from "../testData/dappDemoTestsData";
+import AddCitizenPage from "../pages/addCitizen.page";
 
 test.describe("Dapp Demo Tests", () => {
   test.beforeEach(async ({ homePage }) => {
@@ -56,4 +57,34 @@ test.describe("Dapp Demo Tests", () => {
     const totalCountAfter = await homePage.getTotalRecordsCount();
     expect(totalCountAfter).toBeGreaterThan(totalCountBefore);
   });
+
+  test("Error messages for blank fields", async ({
+    homePage,
+    addCitizenPage,
+  }) => {
+    const totalCountBefore = await homePage.getTotalRecordsCount();
+    await homePage.btnAddCitizenHeader.click();
+    await addCitizenPage.btnAdd.click();
+    await addCitizenPage.page.waitForSelector(".text-red-500", { state: "visible", timeout: 5000 });
+    await expect(addCitizenPage.errMessage.nth(0)).toBeVisible({ timeout: 5000 });
+    await expect(addCitizenPage.errMessage.nth(0)).toHaveText("This field is required");
+    await expect(addCitizenPage.errMessage.nth(1)).toHaveText("This field is required");
+    await expect(addCitizenPage.errMessage.nth(2)).toHaveText("This field is required");
+    await expect(addCitizenPage.errMessage.nth(3)).toHaveText("This field is required");
+  });
+
+  test("First Citizen's detail page", async ({
+    homePage,
+  }) => {
+    await homePage.tableCitizens.waitFor({ state: "visible", timeout: 10000 });
+    await homePage.citizenRows.waitFor({ state: "visible", timeout: 5000 });
+    await homePage.citizenRows.click();
+    await homePage.modal.waitFor({ state: "visible", timeout: 5000 });
+    await expect(homePage.modalTitle).not.toHaveText("");
+    await expect(homePage.modalText).not.toHaveText("");
+    await homePage.closeBtn.waitFor({ state: "visible", timeout: 10000 });
+    await homePage.closeBtn.click();
+    await expect(homePage.tableCitizens).toBeVisible();
+  });
 });
+

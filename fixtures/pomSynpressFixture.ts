@@ -8,6 +8,7 @@ import HomePage from "../pages/home.page";
 import AddCitizenPage from "../pages/addCitizen.page";
 dotenv.config();
 
+
 interface Page {
   context: BrowserContext;
   homePage: HomePage;

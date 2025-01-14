@@ -10,6 +10,7 @@ export default class AddCitizenPage extends BasePage {
   readonly inputNote: Locator;
   readonly btnAdd: Locator;
   readonly msgCitizenAddedSuccess: Locator;
+  readonly errMessage: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -24,6 +25,7 @@ export default class AddCitizenPage extends BasePage {
     this.msgCitizenAddedSuccess = this.page.getByText(
       "Citizen added successfully"
     );
+    this.errMessage = this.page.locator(".text-red-500")
   }
 
   async navigate(): Promise<void> {
